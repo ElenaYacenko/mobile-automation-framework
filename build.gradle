@@ -1,28 +1,28 @@
 plugins {
-    id 'java'
     id 'java-library'
-    id 'io.qameta.allure' version '2.12.0'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 repositories {
     mavenCentral()
 }
 
-def restAssuredVersion = "6.0.0",
-    selenideVersion = "7.13.0",
-    allureVersion = "2.32.0",
-    junitVersion = "5.14.3",
-    slf4jVersion = "2.0.17"
+def aspectjWeaverVersion = "1.9.22",
+    selenideVersion = "6.13.0",
+    restAssuredVersion = "5.3.0",
+    allureVersion = "2.21.0",
+    junitVersion = "5.9.3",
+    slf4jVersion = "2.0.7"
 
 allure {
     report {
         version.set(allureVersion)
     }
-    adapter { // отвечает за появление папочки build/allure-results
-        aspectjWeaver.set(true) //обработка аннотации @Step
+    adapter {
+        aspectjWeaver.set(true)
         frameworks {
-            junit5 { //название фреймворка
-                adapterVersion.set(allureVersion) //версия интеграции фреймворка и Allure
+            junit5 {
+                adapterVersion.set(allureVersion)
             }
         }
     }
@@ -30,14 +30,11 @@ allure {
 
 dependencies {
     testImplementation(
+            "org.aspectj:aspectjweaver:$aspectjWeaverVersion",
             "com.codeborne:selenide:$selenideVersion",
             "io.qameta.allure:allure-selenide:$allureVersion",
+            "io.appium:java-client:8.3.0",
             "io.rest-assured:rest-assured:$restAssuredVersion",
-            "io.rest-assured:json-schema-validator:$restAssuredVersion",
-            "io.qameta.allure:allure-rest-assured:$allureVersion",
-            "tools.jackson.core:jackson-databind:3.1.0",
-            "net.datafaker:datafaker:2.5.4",
-            "org.assertj:assertj-core:3.27.7",
             "org.junit.jupiter:junit-jupiter:$junitVersion",
             "org.slf4j:slf4j-simple:$slf4jVersion"
     )
@@ -45,7 +42,6 @@ dependencies {
 
 tasks.withType(Test) {
     useJUnitPlatform()
-    systemProperties(System.getProperties())
 
     testLogging {
         lifecycle {
