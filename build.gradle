@@ -45,6 +45,8 @@ tasks.withType(Test) {
     useJUnitPlatform()
 
     systemProperty "file.encoding", "UTF-8"
+    systemProperty "browserstack.user", System.getProperty("browserstack.user")
+    systemProperty "browserstack.key", System.getProperty("browserstack.key")
 
     testLogging {
         lifecycle {

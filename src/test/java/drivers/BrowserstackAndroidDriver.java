@@ -32,6 +32,12 @@ public class BrowserstackAndroidDriver implements WebDriverProvider {
         options.setApp(testConfig.androidApp());
         options.setCapability("bstack:options", browserstackOptions);
 
+        System.out.println("=== AUTH DEBUG ===");
+        System.out.println("user = [" + auth.user() + "]");
+        System.out.println("key  = [" + auth.key() + "]");
+        System.out.println("hub  = [" + testConfig.hubUrl() + "]");
+        System.out.println("==================");
+
         try {
             return new AndroidDriver(URI.create(testConfig.hubUrl()).toURL(), options);
         } catch (MalformedURLException e) {

@@ -33,6 +33,12 @@ public class BrowserstackIosDriver implements WebDriverProvider {
         options.setApp(testConfig.iosApp());
         options.setCapability("bstack:options", browserstackOptions);
 
+        System.out.println("=== AUTH DEBUG ===");
+        System.out.println("user = [" + auth.user() + "]");
+        System.out.println("key  = [" + auth.key() + "]");
+        System.out.println("hub  = [" + testConfig.hubUrl() + "]");
+        System.out.println("==================");
+
         try {
             return new IOSDriver(URI.create(testConfig.hubUrl()).toURL(), options);
         } catch (MalformedURLException e) {
