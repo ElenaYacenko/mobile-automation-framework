@@ -22,8 +22,11 @@ public interface AuthConfig extends Config {
     String user();
 
     @Key("browserstack.key")
-    String accessKey();
+    String key();
 
     @Key("browserstack.hubUrl")
     String hubUrl();
+
+    @Key("marker")
+    String marker();
 }

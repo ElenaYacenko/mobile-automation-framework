@@ -10,7 +10,7 @@ public class Browserstack {
                 "https://api.browserstack.com/app-automate/sessions/%s.json", sessionId);
 
         return given()
-                .auth().basic(auth.user(), auth.accessKey())
+                .auth().basic(auth.user(), auth.key())
                 .get(url)
                 .then()
                 .log().status()

@@ -26,7 +26,7 @@ public class BrowserstackDriver implements WebDriverProvider {
 
         HashMap<String, Object> bstackOptions = new HashMap<>();
         bstackOptions.put("userName", auth.user());
-        bstackOptions.put("accessKey", auth.accessKey());
+        bstackOptions.put("accessKey", auth.key());
         bstackOptions.put("projectName", testConfig.projectName());
         bstackOptions.put("buildName", testConfig.buildName());
         bstackOptions.put("appiumVersion", testConfig.appiumVersion());
@@ -48,9 +48,16 @@ public class BrowserstackDriver implements WebDriverProvider {
 
         caps.setCapability("bstack:options", bstackOptions);
 
+        System.out.println("=== AUTH DEBUG ===");
+        System.out.println("user = [" + auth.user() + "]");
+        System.out.println("key  = [" + auth.key() + "]");
+        System.out.println("hub  = [" + auth.hubUrl() + "]");
+        System.out.println("==================");
+        System.out.println("marker = [" + auth.marker() + "]");
+
         try {
             String hub = auth.hubUrl().replaceFirst("^https?://", "");
-            URL url = new URL("https://" + auth.user() + ":" + auth.accessKey() + "@" + hub);
+            URL url = new URL("https://" + auth.user() + ":" + auth.key() + "@" + hub);
             return new RemoteWebDriver(url, caps);
         } catch (MalformedURLException e) {
             throw new RuntimeException("Не удалось собрать URL хаба: " + e.getMessage(), e);
