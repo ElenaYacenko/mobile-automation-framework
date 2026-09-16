@@ -22,7 +22,7 @@ public class SearchTests extends TestBase {
         WebDriver driver = getWebDriver();
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-        step("Type search", () -> {
+        step("Type search!", () -> {
             wait.until(ExpectedConditions.presenceOfElementLocated(
                     AppiumBy.accessibilityId("Search Wikipedia"))).click();
             wait.until(ExpectedConditions.presenceOfElementLocated(
