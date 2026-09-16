@@ -48,3 +48,10 @@ bin/
 /build
 /.gradle
 *.class
+
+# Игнорировать notifications/config.json
+notifications/config.json
+# Или всю папку notifications
+notifications/
+# Или все json файлы в notifications
+notifications/*.json
