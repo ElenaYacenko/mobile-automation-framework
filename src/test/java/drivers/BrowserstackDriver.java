@@ -20,6 +20,8 @@ public class BrowserstackDriver implements WebDriverProvider {
     public WebDriver createDriver(@Nonnull Capabilities capabilities) {
         MutableCapabilities caps = new MutableCapabilities();
 
+        String platform = System.getProperty("platform", "android");
+
         HashMap<String, Object> bstackOptions = new HashMap<>();
         bstackOptions.put("userName", USER);
         bstackOptions.put("accessKey", KEY);
