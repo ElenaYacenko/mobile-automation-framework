@@ -1,6 +1,7 @@
 package tests;
 
 import io.appium.java_client.AppiumBy;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,6 +17,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SearchTests extends TestBase {
+    @BeforeEach
+    void setPlatform() {
+        System.setProperty("platform", "android");
+    }
 
     @Test
     void successfulSearchTest() {
@@ -35,26 +40,26 @@ public class SearchTests extends TestBase {
         });
     }
 
-        @Test
-        void openArticleTest() {
-            WebDriver driver = getWebDriver();
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
+    @Test
+    void openArticleTest() {
+        WebDriver driver = getWebDriver();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(30));
 
-            step("Кликнуть на search и ввести запрос", () -> {
-                wait.until(ExpectedConditions.presenceOfElementLocated(
-                        AppiumBy.accessibilityId("Search Wikipedia"))).click();
-                wait.until(ExpectedConditions.presenceOfElementLocated(
-                        AppiumBy.id("org.wikipedia.alpha:id/search_src_text"))).sendKeys("Java");
-            });
-            step("Открыть статью и проверить результат", () -> {
-                WebElement specificArticle = wait.until(ExpectedConditions.presenceOfElementLocated(
-                        AppiumBy.xpath("//*[contains(@text, 'Java (programming language)')]")));
-                specificArticle.click();
+        step("Кликнуть на search и ввести запрос", () -> {
+            wait.until(ExpectedConditions.presenceOfElementLocated(
+                    AppiumBy.accessibilityId("Search Wikipedia"))).click();
+            wait.until(ExpectedConditions.presenceOfElementLocated(
+                    AppiumBy.id("org.wikipedia.alpha:id/search_src_text"))).sendKeys("Java");
+        });
+        step("Открыть статью и проверить результат", () -> {
+            WebElement specificArticle = wait.until(ExpectedConditions.presenceOfElementLocated(
+                    AppiumBy.xpath("//*[contains(@text, 'Java (programming language)')]")));
+            specificArticle.click();
 
-                List<WebElement> articleContent = driver.findElements(
-                        AppiumBy.xpath("//*[contains(@text, 'programming language') or contains(@text, 'Java')]"));
+            List<WebElement> articleContent = driver.findElements(
+                    AppiumBy.xpath("//*[contains(@text, 'programming language') or contains(@text, 'Java')]"));
 
-                assertTrue(articleContent.size() > 0);
-            });
-        }
+            assertTrue(articleContent.size() > 0);
+        });
     }
+}

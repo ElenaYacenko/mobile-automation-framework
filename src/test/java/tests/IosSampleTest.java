@@ -1,6 +1,6 @@
 package tests;
 
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class IosSampleTest extends TestBase {
 
-    @BeforeAll
-    static void setPlatform() {
+    @BeforeEach
+    void setPlatform() {
         System.setProperty("platform", "ios");
     }
 

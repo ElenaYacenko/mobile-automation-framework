@@ -48,6 +48,9 @@ tasks.withType(JavaCompile) {
 tasks.withType(Test) {
     useJUnitPlatform()
 
+    systemProperty "browserstack.user", System.getProperty("browserstack.user")
+    systemProperty "browserstack.key", System.getProperty("browserstack.key")
+
     testLogging {
         lifecycle {
             events "started", "skipped", "failed", "standard_error", "standard_out"
