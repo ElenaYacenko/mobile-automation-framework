@@ -2,8 +2,9 @@ package tests;
 
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.Selenide;
+import com.codeborne.selenide.WebDriverProvider;
 import com.codeborne.selenide.logevents.SelenideLogger;
-import drivers.BrowserstackDriver;
+import drivers.BrowserstackAndroidDriver;
 import helpers.Attach;
 import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterEach;
@@ -13,38 +14,31 @@ import org.junit.jupiter.api.BeforeEach;
 import static com.codeborne.selenide.Selenide.closeWebDriver;
 import static com.codeborne.selenide.Selenide.open;
 
-public  class TestBase {
+public class TestBase {
 
     @BeforeAll
-    static void beforeAll() {
-        Configuration.browser = BrowserstackDriver.class.getName();
+    static void configureSelenide() {
         Configuration.browserSize = null;
+        Configuration.pageLoadTimeout = -1;
         Configuration.timeout = 30000;
-        Configuration.screenshots = false;
-        Configuration.savePageSource = false;
     }
 
+    protected Class<? extends WebDriverProvider> driver() {return BrowserstackAndroidDriver.class;}
+
     @BeforeEach
-    void beforeEach() {
-        SelenideLogger.addListener("AllureSelenide",
-                new AllureSelenide().screenshots(false).savePageSource(false));
+    void startApp() {
+        Configuration.browser = driver().getName();
+        SelenideLogger.addListener("AllureSelenide", new AllureSelenide());
         open();
     }
 
     @AfterEach
-    void addAttachments() {
-        String sessionId = null;
-        try {
-            sessionId = Selenide.sessionId().toString();
-            System.out.println(sessionId);
-        } catch (Exception ignored) {
-        }
+    void closeApp() {
+        String sessionId = Selenide.sessionId().toString();
+        System.out.println(sessionId);
+        Attach.screenshotAs("Last screenshot");
+        Attach.pageSource();
         closeWebDriver();
-        if (sessionId != null) {
-            try {
-                Attach.addVideo(sessionId);
-            } catch (Exception ignored) {
-            }
-        }
+        Attach.addVideo(sessionId);
     }
 }

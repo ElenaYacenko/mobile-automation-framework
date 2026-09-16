@@ -1,6 +1,5 @@
 package tests;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -14,12 +13,7 @@ import static io.qameta.allure.Allure.step;
 import static org.asynchttpclient.util.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class IosSampleTest extends TestBase {
-
-    @BeforeAll
-    static void setPlatform() {
-        System.setProperty("platform", "ios");
-    }
+public class IosSampleTest extends TestBaseIos {
 
     @Test
     void appLaunchesAndHasElements() {
