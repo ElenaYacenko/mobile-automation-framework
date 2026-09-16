@@ -1,18 +1,16 @@
 package helpers;
 
+import static config.Project.auth;
 import static io.restassured.RestAssured.given;
-
 
 public class Browserstack {
 
-    public static final String USER = "мой логин";
-    public static final String KEY = "мой ключ";
-
     public static String videoUrl(String sessionId) {
-        String url = String.format("https://api.browserstack.com/app-automate/sessions/%s.json", sessionId);
+        String url = String.format(
+                "https://api.browserstack.com/app-automate/sessions/%s.json", sessionId);
 
         return given()
-                .auth().basic(USER, KEY)
+                .auth().basic(auth.user(), auth.accessKey())
                 .get(url)
                 .then()
                 .log().status()

@@ -15,7 +15,6 @@ import static org.asynchttpclient.util.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class IosSampleTest extends TestBase {
-    private static final String inputText = "elena@browserstack.com";
 
     @BeforeAll
     static void setPlatform() {

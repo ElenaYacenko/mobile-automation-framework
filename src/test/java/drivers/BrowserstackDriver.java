@@ -11,36 +11,49 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 
-import static helpers.Browserstack.KEY;
-import static helpers.Browserstack.USER;
+import static config.Project.auth;
+import static config.Project.testConfig;
 
 public class BrowserstackDriver implements WebDriverProvider {
+
     @Nonnull
     @Override
     public WebDriver createDriver(@Nonnull Capabilities capabilities) {
         MutableCapabilities caps = new MutableCapabilities();
 
         String platform = System.getProperty("platform", "android");
+        System.out.println("=== PLATFORM: " + platform + " ===");
 
         HashMap<String, Object> bstackOptions = new HashMap<>();
-        bstackOptions.put("userName", USER);
-        bstackOptions.put("accessKey", KEY);
-        bstackOptions.put("projectName", "First Java Project");
-        bstackOptions.put("buildName", "browserstack-build-1");
-        bstackOptions.put("sessionName", "first_test");
-        bstackOptions.put("deviceName", "Samsung Galaxy S22 Ultra");
-        bstackOptions.put("osVersion", "12.0");
-        bstackOptions.put("appiumVersion", "2.6.0");
+        bstackOptions.put("userName", auth.user());
+        bstackOptions.put("accessKey", auth.accessKey());
+        bstackOptions.put("projectName", testConfig.projectName());
+        bstackOptions.put("buildName", testConfig.buildName());
+        bstackOptions.put("appiumVersion", testConfig.appiumVersion());
 
-        caps.setCapability("platformName", "android");
-        caps.setCapability("appium:app", "bs://sample.app");
+        if ("ios".equals(platform)) {
+            bstackOptions.put("deviceName", testConfig.iosDevice());
+            bstackOptions.put("osVersion", testConfig.iosOsVersion());
+
+            caps.setCapability("platformName", "ios");
+            caps.setCapability("appium:app", testConfig.iosApp());
+            caps.setCapability("appium:automationName", "XCUITest");
+        } else {
+            bstackOptions.put("deviceName", testConfig.androidDevice());
+            bstackOptions.put("osVersion", testConfig.androidOsVersion());
+
+            caps.setCapability("platformName", "android");
+            caps.setCapability("appium:app", testConfig.androidApp());
+        }
+
         caps.setCapability("bstack:options", bstackOptions);
 
         try {
-            return new RemoteWebDriver(
-                    new URL("https://" + USER + ":" + KEY + "@hub.browserstack.com/wd/hub"), caps);
+            String hub = auth.hubUrl().replaceFirst("^https?://", "");
+            URL url = new URL("https://" + auth.user() + ":" + auth.accessKey() + "@" + hub);
+            return new RemoteWebDriver(url, caps);
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Не удалось собрать URL хаба: " + e.getMessage(), e);
         }
     }
 }

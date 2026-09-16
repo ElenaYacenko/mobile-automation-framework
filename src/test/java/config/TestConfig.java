@@ -2,14 +2,11 @@ package config;
 
 import org.aeonbits.owner.Config;
 
-/**
- * Не секретные настройки: устройства, версия Appium, имена приложений и т. д.
- * Источники те же: system property → env → config.properties.
- */
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({
         "system:properties",
         "system:env",
+        "classpath:config-local.properties",
         "classpath:config.properties"
 })
 public interface TestConfig extends Config {
